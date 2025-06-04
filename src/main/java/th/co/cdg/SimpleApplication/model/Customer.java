@@ -1,12 +1,26 @@
 package th.co.cdg.SimpleApplication.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "CUSTOMER")
 public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "NAME")
     private String name;
+    @Column(name = "SURNAME")
     private String surname;
+    @Column(name = "ADDRESS")
     private String address;
+    @Column(name = "AGE")
     private Long age;
+    @Column(name = "TEL")
     private String tel;
+
+    public Customer() {}
 
     //Getter Zone
     public Long getId() { return id; }
