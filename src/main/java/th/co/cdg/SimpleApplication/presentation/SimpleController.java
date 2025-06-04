@@ -84,4 +84,20 @@ public class SimpleController {
         return ResponseEntity.notFound().build();
     }
 
+    @PutMapping(value="/api/user/{id}")
+    public ResponseEntity<String> updateUserById(@PathVariable int id, @RequestBody User user) {
+        if(isUserExist(id)){
+            User foundUser = findUserById(id);
+            if(null != user.getName()){
+                foundUser.setName(user.getName());
+                return ResponseEntity.ok().body("User with ID " + id + " updated successfully.");
+            }
+            if(null != user.getTel()){
+                foundUser.setTel(user.getTel());
+            }
+
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }
