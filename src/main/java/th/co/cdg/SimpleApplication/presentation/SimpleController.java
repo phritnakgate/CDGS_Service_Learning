@@ -8,6 +8,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import th.co.cdg.SimpleApplication.model.User;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -41,7 +42,11 @@ public class SimpleController {
     }
 
     private User findUserById(int id) {
-        return users.stream().filter(user -> user.getId() == id).findFirst().orElse(null);
+        return users
+                .stream()
+                .filter(user -> user.getId() == id)
+                .findAny()
+                .orElse(null);
     }
 
     @GetMapping(value="/api/users")
@@ -49,6 +54,7 @@ public class SimpleController {
         if(users.isEmpty()){
             return ResponseEntity.noContent().build();
         }else{
+            users.sort(Comparator.comparing(User::getId)); //Sort Data Based on ID
             return ResponseEntity.ok().body(users);
         }
 
@@ -86,6 +92,9 @@ public class SimpleController {
 
     @PutMapping(value="/api/user/{id}")
     public ResponseEntity<String> updateUserById(@PathVariable int id, @RequestBody User user) {
+        if(null == user){
+            return ResponseEntity.badRequest().body("Invalid user data provided.");
+        }
         if(isUserExist(id)){
             User foundUser = findUserById(id);
             if(null != user.getName()){
