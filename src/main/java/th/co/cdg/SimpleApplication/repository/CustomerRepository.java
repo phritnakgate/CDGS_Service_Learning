@@ -31,6 +31,7 @@ public class CustomerRepository {
             customer.setAddress((String) row[3]);
             customer.setAge((Long) row[4]);
             customer.setTel((String) row[5]);
+            customer.setImage((byte[]) row[6]);
             customers.add(customer);
         }
         return customers;
@@ -48,13 +49,14 @@ public class CustomerRepository {
     //3. Add Customer
     @Transactional(Transactional.TxType.REQUIRED)
     public int addCustomer(Customer customer) {
-        String sqlQuery = "INSERT INTO CUSTOMER (NAME, SURNAME, ADDRESS, AGE, TEL) VALUES (:name, :surname, :address, :age, :tel)";
+        String sqlQuery = "INSERT INTO CUSTOMER (NAME, SURNAME, ADDRESS, AGE, TEL, IMAGE) VALUES (:name, :surname, :address, :age, :tel, :image)";
         Query query = entityManager.createNativeQuery(sqlQuery);
         query.setParameter("name", customer.getName());
         query.setParameter("surname", customer.getSurname());
         query.setParameter("address", customer.getAddress());
         query.setParameter("age", customer.getAge());
         query.setParameter("tel", customer.getTel());
+        query.setParameter("image", customer.getImage());
 
         return query.executeUpdate();
     }
@@ -92,6 +94,15 @@ public class CustomerRepository {
         Query query = entityManager.createNativeQuery(sqlQuery);
         query.setParameter("id", id);
         return query.executeUpdate();
+    }
+
+    //Get Customer Image by ID
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public byte[] queryCustomerImageById(Long id) {
+        String sqlQuery = "SELECT IMAGE FROM CUSTOMER WHERE ID = :id";
+        Query query = entityManager.createNativeQuery(sqlQuery);
+        query.setParameter("id", id);
+        return (byte[]) query.getSingleResult();
     }
 
 }

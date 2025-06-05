@@ -19,6 +19,8 @@ public class Customer {
     private Long age;
     @Column(name = "TEL")
     private String tel;
+    @Column(name= "IMAGE")
+    private byte[] image;
 
     public Customer() {}
 
@@ -29,6 +31,7 @@ public class Customer {
     public String getAddress() { return address; }
     public Long getAge() { return age; }
     public String getTel() { return tel; }
+    public byte[] getImage() { return image; }
 
     //Setter Zone
     public void setId(Long id) { this.id = id; }
@@ -37,4 +40,5 @@ public class Customer {
     public void setAddress(String address) { this.address = address; }
     public void setAge(Long age) { this.age = age; }
     public void setTel(String tel) { this.tel = tel; }
+    public void setImage(byte[] image) { this.image = image; }
 }
